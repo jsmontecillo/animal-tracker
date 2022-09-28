@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import defaultImg from './default.png';
 import './species.css'
 
 const Species = () => {
@@ -15,10 +16,11 @@ const Species = () => {
 
       return (
         <>
+            <h2>Species</h2>
             {animals.map((animal) => {
                 return (
                     <div className="animal-card" key={animal.id}>
-                        <img src={animal.image} alt={animal.common_name} height="300px" />
+                        <img src={animal.image || defaultImg} alt={animal.common_name} height="300px" />
                         {animal.common_name}
                     </div>
                 )

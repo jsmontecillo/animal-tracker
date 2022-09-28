@@ -1,5 +1,6 @@
 .header {
     margin-top: 0;
+    text-shadow: 2px 2px #464569;
     background-image: url(header.jpg);
     background-size: cover;
     padding: 200px;
