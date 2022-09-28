@@ -1,3 +1,28 @@
-ul {
-    list-style: none;
+.link {
+    background-color: black;
+    color: white;
+    padding: 10px;
+}
+
+.link:hover {
+    background-color: white;
+    color: black;
+    transition: 1s ease;
+}
+
+label {
+    padding: 3px;
+}
+
+input {
+    padding: 3px;
+    margin: 2px;
+}
+
+.description {
+    margin-top: 50px;
+    margin-left: 30px;
+    width: 65%;
+    text-align: left;
+    padding: 10px;
 }
