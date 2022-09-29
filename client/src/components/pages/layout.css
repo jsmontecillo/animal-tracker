@@ -1,13 +1,26 @@
-.link {
+.nav-bar {
     background-color: black;
+    text-align: left;
+    padding: 20px;
+    opacity: 70%;
+}
+
+.link {
     color: white;
-    padding: 10px;
+    padding: 20px;
+    text-decoration: none;
 }
 
 .link:hover {
     background-color: white;
     color: black;
     transition: 1s ease;
+}
+
+
+.donate {
+    margin-left: 850px;
+    text-align: right;
 }
 
 label {

@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 require('dotenv').config();
 const db = require('./db/db-connection.js');
+const { restart } = require('nodemon');
 
 const app = express();
 
@@ -53,18 +54,30 @@ app.get('/api/animals', cors(), async (req, res) => {
 });
 
 // create the POST request
-app.post('/api/students', cors(), async (req, res) => {
-  const newUser = {
-    firstname: req.body.firstname,
-    lastname: req.body.lastname,
+//sighting_date: "", individual: "", location: "", 
+//appeared_healthy: "", record_date: "", individual_id: ""
+app.post('/api/sightings', cors(), async (req, res) => {
+  const newSight = {
+    sighting_date: req.body.sighting_date,
+    individual: req.body.individual,
+    location: req.body.location,
+    appeared_healthy: req.body.appeared_healthy,
+    email: req.body.email,
+    record_date: req.body.record_date,
+    individual_id: req.body.individual_id
   };
-  console.log([newUser.firstname, newUser.lastname]);
-  const result = await db.query(
-    'INSERT INTO students(firstname, lastname) VALUES($1, $2) RETURNING *',
-    [newUser.firstname, newUser.lastname],
-  );
-  console.log(result.rows[0]);
-  res.json(result.rows[0]);
+  console.log([newSight.sighting_date]);
+  try {
+    const result = await db.query(
+    'INSERT INTO sightings(sighting_date, individual, location, appeared_healthy, email, record_creation, individual_id) VALUES($1, $2, $3, $4, $5, $6, $7) RETURNING *',
+    [newSight.sighting_date, newSight.individual, newSight.location, newSight.appeared_healthy, newSight.email, newSight.record_date, newSight.individual_id]
+    );
+    console.log(result.rows[0]);
+    res.json(result.rows[0]);
+  } catch(e) {
+    return res.status(400).json({e});
+  }
+
 });
 
 //put request - update an animal/sighting
@@ -87,6 +100,12 @@ app.put('/api/animals/:animalId', cors(), async (req,res) => {
     return res.status(400).json({e})
   }
 })
+
+app.delete(`/api/sightings/:id`, cors(), async(req,res) => {
+  const animalId = req.params.id;
+  await db.query('DELETE FROM sightings WHERE id=$1', [animalId]);
+  res.status(200).end();
+});
 
 // console.log that your server is up and running
 app.listen(PORT, () => {
