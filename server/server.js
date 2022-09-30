@@ -80,6 +80,30 @@ app.post('/api/sightings', cors(), async (req, res) => {
 
 });
 
+//nickname: "", species: "", species_id: "", location: "", record_creation: "", image: ""
+app.post('/api/individuals', cors(), async (req, res) => {
+  const newIndividual = {
+    nickname: req.body.nickname,
+    species: req.body.species,
+    species_id: req.body.species_id,
+    location: req.body.location,
+    record_creation: req.body.record_creation,
+    image: req.body.image
+  };
+  console.log([newSight.sighting_date]);
+  try {
+    const result = await db.query(
+    'INSERT INTO sightings(nickname, species, species_id, location, record_creation, image) VALUES($1, $2, $3, $4, $5, $6) RETURNING *',
+    [newIndividual.nickname, newIndividual.species, newIndividual.species_id, newIndividual.location, newIndividual.record_creation, newIndividual.image]
+    );
+    console.log(result.rows[0]);
+    res.json(result.rows[0]);
+  } catch(e) {
+    return res.status(400).json({e});
+  }
+
+});
+
 //put request - update an animal/sighting
 app.put('/api/animals/:animalId', cors(), async (req,res) => {
   //this will be the id that i want to find in db
@@ -104,6 +128,12 @@ app.put('/api/animals/:animalId', cors(), async (req,res) => {
 app.delete(`/api/sightings/:id`, cors(), async(req,res) => {
   const animalId = req.params.id;
   await db.query('DELETE FROM sightings WHERE id=$1', [animalId]);
+  res.status(200).end();
+});
+
+app.delete(`/api/individuals/:id`, cors(), async(req,res) => {
+  const animalId = req.params.id;
+  await db.query('DELETE FROM individuals WHERE id=$1', [animalId]);
   res.status(200).end();
 });
 
