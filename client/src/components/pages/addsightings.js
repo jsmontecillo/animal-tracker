@@ -53,9 +53,11 @@ console.log(values);
   const onDelete = async (ID) => {
     let response = await fetch(`http://localhost:7070/api/sightings/${ID}`, {method: "DELETE"})
     await response.json();
-    let deleteSightings = sightings.filter((sight) => sight.id !== Number(ID));
-    setSightings(deleteSightings);
+    let deleteSightings = [...sightings];
+    let deleted = deleteSightings.filter((sight) => sight.id !== Number(ID));
+    setSightings(deleted);
     getSightings();
+    window.location.reload(false);
   }
 
     return (
