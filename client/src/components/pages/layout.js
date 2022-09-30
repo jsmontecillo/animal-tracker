@@ -6,16 +6,20 @@ import './layout.css';
 import header from '../header.jpg';
 
 function Layout() {
+  const handleDonate = () => {
+
+  }
   return (
     <>
       <nav className="nav-bar">
         <Link to="/" className="link">HOME</Link>
         <Link to="/add-individuals" className="link">ADD INDIVIDUAL</Link>
         <Link to="/add-sighting" className="link">SUBMIT SIGHTINGS</Link>
-        <span className="donate">
-          <button>DONATE</button>
+        <span>
+          <button className="donate" onClick={handleDonate}>DONATE</button>
         </span>
       </nav>
+
       <Header image={header} title="Endangered Species"/>
       <Outlet />
       <div className="description">

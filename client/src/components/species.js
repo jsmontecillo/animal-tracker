@@ -17,14 +17,18 @@ const Species = () => {
       return (
         <>
             <h2>Species</h2>
-            {animals.map((animal) => {
-                return (
-                    <div className="animal-card" key={animal.id}>
-                        <img src={animal.image || defaultImg} alt={animal.common_name} height="300px" />
-                        {animal.common_name}
-                    </div>
-                )
-            })}
+            <div className="container">
+                {animals.map((animal) => {
+                    return (
+                        <div className="animal-card" key={animal.id}>
+                            <img src={animal.image || defaultImg} alt={animal.common_name} height="300px" />
+                            <div className="full-cap">
+                                <a href="/" className="names">{animal.common_name}</a>
+                            </div>
+                        </div>
+                    )
+                })}
+            </div>
         </>
       );
 }

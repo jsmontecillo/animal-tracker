@@ -2,10 +2,11 @@ import { Link } from "react-router-dom";
 import {useState, useEffect} from 'react';
 import Header from '../header.js';
 import polar from './polar.jpeg';
+import './addindividual.css';
 
 const IndividualsForm = () => {
   const [individuals, setIndividuals] = useState([]);
-  const [values, setValues] = useState({nickname: "", species: "", speciesID: "", location: "", recordDate: "", image: ""});
+  const [values, setValues] = useState({nickname: "", species: "", species_id: "", location: "", record_creation: "", image: ""});
 
   const getIndividuals = async () => {
     const response = await fetch('http://localhost:7070/api/individuals');
@@ -20,9 +21,16 @@ const IndividualsForm = () => {
 
   console.log(individuals);
 
+  const handleInput = (e) => {
+    setValues((preValues) => ({
+        ...preValues,
+        [e.target.name]: e.target.value
+    }))
+};
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const newIndividual= values;
+    const newIndividual = values;
     const rawResponse = await fetch('http://localhost:7070/api/individuals', {
       method: 'POST',
       headers: {
@@ -34,10 +42,22 @@ const IndividualsForm = () => {
     const content = await rawResponse.json();
   
     setIndividuals([...individuals, content]);
-    setValues({nickname: "", species: "", speciesID: "", location: "", recordDate: "", image: ""});
+    setValues({nickname: "", species: "", species_id: "", location: "", record_creation: "", image: ""});
   }
+
+  const onDelete = async (ID) => {
+    let response = await fetch(`http://localhost:7070/api/individuals/${ID}`, {method: "DELETE"})
+    await response.json();
+    let deleteIndividuals = individuals.filter((i) => i.id !== Number(ID));
+    setIndividuals(deleteIndividuals);
+    getIndividuals();
+  }
+
     return (
       <div>
+        <nav className="nav-bar">
+          <Link to="/" className="link">Show List of Species</Link>
+        </nav>
         <Header image={polar} title="Add An Individual" />
         <form onSubmit={handleSubmit}>
           <fieldset>
@@ -45,49 +65,75 @@ const IndividualsForm = () => {
           <input
             type="text"
             id="nickname"
+            name="nickname"
             required
+            defaultValue={values.nickname} 
+            onChange={handleInput}
           /><br/>
           <label>Species</label>
           <input
             type="text"
             id="individual"
             placeholder="South China Tiger"
+            name="individual"
             required
+            defaultValue={values.individual} 
+            onChange={handleInput}
           /><br/>
           <label>Species ID</label>
           <input
             type="number"
             id="species-id"
+            name="species_id"
             required
+            defaultValue={values.species_id} 
+            onChange={handleInput}
           /><br/>
           <label>Location</label>
           <input
             type="text"
             id="location"
             placeholder="Rocky Mountains"
+            name="location"
             required
+            defaultValue={values.location} 
+            onChange={handleInput}
           /><br/>
           <label>Record Creation Date</label>
           <input
             type="date"
             id="creation-date"
             placeholder="Last Name"
+            name="record_creation"
             required
+            defaultValue={values.record_creation} 
+            onChange={handleInput}
           /><br/>
           <label>Image</label>
           <input
             type="text"
             id="individual-image"
+            name="image"
             required
+            defaultValue={values.image} 
+            onChange={handleInput}
           />
         </fieldset>
-        <button type="submit">Submit</button>
+        <button type="submit" className="button-83">Submit</button>
       </form>
       <div className="individuals">
         <h3>Our Current Individuals</h3>
+        <div className="container">
+            {individuals.map((i) => {
+              return (
+                <div key={i.id} className="individual-card">
+                  {i.nickname}: {i.species}, {i.location}
+                  <br/><button type="button" onClick={() => {onDelete(i.id)}} >DELETE</button>
+                </div>
+              )
+            })}
+          </div>
       </div>
-        <small>Main Page</small>
-        <Link to="/">Show List of Species</Link>
       </div>
     );
 };
