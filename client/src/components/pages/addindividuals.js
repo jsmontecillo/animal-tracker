@@ -51,6 +51,7 @@ const IndividualsForm = () => {
     let deleteIndividuals = individuals.filter((i) => i.id !== Number(ID));
     setIndividuals(deleteIndividuals);
     getIndividuals();
+    window.location.reload(false);
   }
 
     return (
@@ -89,16 +90,6 @@ const IndividualsForm = () => {
             defaultValue={values.species_id} 
             onChange={handleInput}
           /><br/>
-          <label>Location</label>
-          <input
-            type="text"
-            id="location"
-            placeholder="Rocky Mountains"
-            name="location"
-            required
-            defaultValue={values.location} 
-            onChange={handleInput}
-          /><br/>
           <label>Record Creation Date</label>
           <input
             type="date"
@@ -127,8 +118,14 @@ const IndividualsForm = () => {
             {individuals.map((i) => {
               return (
                 <div key={i.id} className="individual-card">
-                  {i.nickname}: {i.species}, {i.location}
-                  <br/><button type="button" onClick={() => {onDelete(i.id)}} >DELETE</button>
+                  <div className="indiv-image">
+                    <img src={i.image} alt={i.nickname} height="300px" />
+                  </div>
+                  <ul style={{listStyle: "none", marginLeft: "-40px"}}>
+                    <li style={{fontSize: "25px"}}>{i.nickname}</li>
+                    <li>Species: {i.species}</li>
+                  </ul>
+                  <br/><button type="button" className="button-83" style={{marginLeft: "100px"}} onClick={() => {onDelete(i.id)}} >DELETE</button>
                 </div>
               )
             })}

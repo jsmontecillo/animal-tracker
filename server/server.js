@@ -46,7 +46,7 @@ app.get('/api/sightings', cors(), async (req, res) => {
 //join table here
 app.get('/api/animals', cors(), async (req, res) => {
   try {
-    const allRows = await db.query('SELECT sightings.id, individuals.nickname, species.common_name, species.scientific_name, species.living_in_wild, species.conservation_status_code, sightings.location, sightings.appeared_healthy, sightings.email, individuals.image FROM sightings JOIN individuals ON sightings.individual_id = individuals.id JOIN species on species.id = individuals.species_id');
+    const allRows = await db.query('SELECT sightings.id, individuals.nickname, species.common_name, species.scientific_name, species.living_in_wild, species.conservation_status_code, sightings.location, sightings.appeared_healthy, sightings.email, individuals.image FROM sightings JOIN individuals ON sightings.individual_id = individuals.species_id JOIN species on species.id = individuals.species_id');
     res.send(allRows.rows);
   } catch (e) {
     return res.status(400).json({ e });
@@ -86,15 +86,14 @@ app.post('/api/individuals', cors(), async (req, res) => {
     nickname: req.body.nickname,
     species: req.body.species,
     species_id: req.body.species_id,
-    location: req.body.location,
     record_creation: req.body.record_creation,
     image: req.body.image
   };
-  console.log([newSight.sighting_date]);
+
   try {
     const result = await db.query(
-    'INSERT INTO sightings(nickname, species, species_id, location, record_creation, image) VALUES($1, $2, $3, $4, $5, $6) RETURNING *',
-    [newIndividual.nickname, newIndividual.species, newIndividual.species_id, newIndividual.location, newIndividual.record_creation, newIndividual.image]
+    'INSERT INTO sightings(nickname, species, species_id, record_creation, image) VALUES($1, $2, $3, $4, $5, $6) RETURNING *',
+    [newIndividual.nickname, newIndividual.species, newIndividual.species_id, newIndividual.record_creation, newIndividual.image]
     );
     console.log(result.rows[0]);
     res.json(result.rows[0]);
