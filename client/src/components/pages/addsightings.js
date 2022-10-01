@@ -57,7 +57,6 @@ console.log(values);
     let deleted = deleteSightings.filter((sight) => sight.id !== Number(ID));
     setSightings(deleted);
     getSightings();
-    window.location.reload(false);
   }
 
     return (
