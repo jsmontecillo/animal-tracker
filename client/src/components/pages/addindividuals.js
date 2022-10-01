@@ -17,7 +17,7 @@ const IndividualsForm = () => {
   useEffect(() => {
   // useEffect will run getUsers() every time this component loads, as opposed to just the first time it is rendered.
     getIndividuals();
-  }, []);
+  }, [individuals]);
 
   console.log(individuals);
 
@@ -51,7 +51,6 @@ const IndividualsForm = () => {
     let deleteIndividuals = individuals.filter((i) => i.id !== Number(ID));
     setIndividuals(deleteIndividuals);
     getIndividuals();
-    window.location.reload(false);
   }
 
     return (
