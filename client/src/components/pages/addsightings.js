@@ -18,7 +18,7 @@ const SightingsForm = () => {
   useEffect(() => {
   // useEffect will run getUsers() every time this component loads, as opposed to just the first time it is rendered.
     getSightings();
-  }, []);
+  }, [sightings]);
 
   console.log(sightings);
 
